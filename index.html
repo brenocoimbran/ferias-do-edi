@@ -2,13 +2,14 @@
 <html>
 
 <head>
+
 <meta charset="UTF-8">
 <title>Minhas Férias</title>
 
 <style>
 
 body{
-background:#0a0a0a;
+background:black;
 color:white;
 font-family:Arial;
 text-align:center;
@@ -21,45 +22,36 @@ margin-top:20px;
 }
 
 #countdown{
-font-size:30px;
+font-size:35px;
 margin-bottom:20px;
-}
-
-#beer{
-font-size:25px;
-margin:20px;
 }
 
 .media{
 position:absolute;
-width:140px;
-pointer-events:none;
+width:180px;
+border-radius:10px;
 }
 
-.diario{
+video{
+width:220px;
+}
+
+#diario{
 position:fixed;
 bottom:0;
 width:100%;
 background:#111;
-padding:20px;
-max-height:40vh;
-overflow:auto;
+padding:15px;
 }
 
-.dia{
-background:#222;
-padding:10px;
-margin:10px;
-border-radius:8px;
-}
-
-button{
-padding:10px 20px;
-font-size:18px;
-cursor:pointer;
+textarea{
+width:80%;
+height:120px;
+font-size:16px;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -68,88 +60,72 @@ cursor:pointer;
 
 <div id="countdown"></div>
 
-<div id="beer">
-🍺 Cervejas consumidas: <span id="beerCount">0</span>
-<br><br>
-<button onclick="beer()">+1 cerveja</button>
-</div>
+<div id="diario">
 
-<!-- mídias -->
+<h2>Diário das férias</h2>
 
-<img src="midia/foto1.png" class="media">
-<img src="midia/foto2.png" class="media">
-
-<video class="media" autoplay muted loop>
-<source src="midia/video1.mp4">
-</video>
-
-<video class="media" autoplay muted loop>
-<source src="midia/video2.mp4">
-</video>
-
-<div class="diario">
-
-<h2>📖 Diário das férias</h2>
-
-<div class="dia">
-<b>Dia 1</b><br>
-Cheguei no destino e já abri uma cerveja.
-</div>
-
-<div class="dia">
-<b>Dia 2</b><br>
-Acordei 13h. Dia produtivo.
-</div>
-
-<div class="dia">
-<b>Dia 3</b><br>
-Ainda não sei que dia é hoje.
-</div>
+<textarea placeholder="Escreva o que aconteceu hoje..."></textarea>
 
 </div>
 
 <script>
 
-var volta = new Date("2026-03-20")
+var imagens = [
+"midia/foto1.png",
+"midia/foto2.png",
+"midia/foto3.png",
+"midia/foto4.png"
+]
 
-function atualizarCountdown(){
+var videos = [
+"midia/video1.mp4",
+"midia/video2.mp4"
+]
 
-var agora = new Date()
+function criarImagem(){
 
-var diff = volta - agora
+var img = document.createElement("img")
+img.src = imagens[Math.floor(Math.random()*imagens.length)]
+img.className="media"
 
-var dias = Math.floor(diff/(1000*60*60*24))
-var horas = Math.floor((diff/(1000*60*60))%24)
-var min = Math.floor((diff/(1000*60))%60)
+var x = Math.random()*window.innerWidth
+var y = Math.random()*window.innerHeight
 
-document.getElementById("countdown").innerHTML =
-"⏳ Volta ao trabalho em: "+dias+"d "+horas+"h "+min+"m"
+img.style.left=x+"px"
+img.style.top=y+"px"
+
+document.body.appendChild(img)
+
+movimento(img)
 
 }
 
-setInterval(atualizarCountdown,1000)
+function criarVideo(){
 
+var vid = document.createElement("video")
 
+vid.src = videos[Math.floor(Math.random()*videos.length)]
+vid.autoplay=true
+vid.loop=true
+vid.muted=true
+vid.className="media"
 
-// contador de cerveja
+var x = Math.random()*window.innerWidth
+var y = Math.random()*window.innerHeight
 
-var cervejas=0
+vid.style.left=x+"px"
+vid.style.top=y+"px"
 
-function beer(){
-cervejas++
-document.getElementById("beerCount").innerText=cervejas
+document.body.appendChild(vid)
+
+movimento(vid)
+
 }
 
+function movimento(el){
 
-
-// movimento das imagens
-
-var items=document.querySelectorAll(".media")
-
-items.forEach(function(el){
-
-var x=Math.random()*window.innerWidth
-var y=Math.random()*window.innerHeight
+var x=parseFloat(el.style.left)
+var y=parseFloat(el.style.top)
 
 var dx=(Math.random()*2)+1
 var dy=(Math.random()*2)+1
@@ -159,17 +135,71 @@ setInterval(function(){
 x+=dx
 y+=dy
 
-if(x>window.innerWidth-150 || x<0) dx*=-1
-if(y>window.innerHeight-150 || y<0) dy*=-1
+if(x>window.innerWidth-200||x<0) dx*=-1
+if(y>window.innerHeight-200||y<0) dy*=-1
 
 el.style.left=x+"px"
 el.style.top=y+"px"
 
 },30)
 
-})
+}
+
+
+// criar várias mídias
+
+for(let i=0;i<12;i++) criarImagem()
+
+for(let i=0;i<4;i++) criarVideo()
+
+
+
+// countdown
+
+var volta = new Date("2026-06-23T09:00:00")
+
+function atualizar(){
+
+var agora = new Date()
+
+var diff = volta-agora
+
+var dias=Math.floor(diff/(1000*60*60*24))
+var horas=Math.floor((diff/(1000*60*60))%24)
+var min=Math.floor((diff/(1000*60))%60)
+var seg=Math.floor((diff/1000)%60)
+
+document.getElementById("countdown").innerHTML=
+"⏳ Voltando ao trabalho em: "+dias+"d "+horas+"h "+min+"m "+seg+"s"
+
+}
+
+setInterval(atualizar,1000)
+
+
+
+// música
+
+var musicas = [
+"musica/musica1.mp3",
+"musica/musica2.mp3"
+]
+
+var audio = new Audio(
+musicas[Math.floor(Math.random()*musicas.length)]
+)
+
+audio.loop=true
+audio.volume=0.6
+
+window.addEventListener("click",function(){
+
+audio.play()
+
+},{once:true})
 
 </script>
 
 </body>
+
 </html>
