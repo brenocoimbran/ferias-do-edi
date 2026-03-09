@@ -9,45 +9,57 @@
 <style>
 
 body{
-background:black;
-color:white;
-font-family:Arial;
+font-family:"Comic Sans MS",cursive;
 text-align:center;
 overflow:hidden;
+color:white;
+
+background-image:
+url("midia/foto1.jpg"),
+url("midia/foto2.jpg"),
+url("midia/foto3.jpg"),
+url("midia/foto4.jpg");
+
+background-size:300px;
+background-repeat:repeat;
 }
 
 h1{
-font-size:70px;
-margin-top:20px;
+font-size:80px;
+color:yellow;
+text-shadow:3px 3px red;
 }
 
 #countdown{
-font-size:35px;
-margin-bottom:20px;
+font-size:40px;
+background:black;
+display:inline-block;
+padding:10px;
+margin:20px;
 }
 
 .media{
 position:absolute;
 width:180px;
-border-radius:10px;
 }
 
 video{
-width:220px;
+width:240px;
 }
 
 #diario{
 position:fixed;
 bottom:0;
 width:100%;
-background:#111;
-padding:15px;
+background:rgba(0,0,0,0.8);
+padding:10px;
 }
 
 textarea{
 width:80%;
 height:120px;
-font-size:16px;
+font-family:"Comic Sans MS";
+font-size:18px;
 }
 
 </style>
@@ -61,35 +73,61 @@ font-size:16px;
 <div id="countdown"></div>
 
 <div id="diario">
-
 <h2>Diário das férias</h2>
-
 <textarea placeholder="Escreva o que aconteceu hoje..."></textarea>
-
 </div>
 
 <script>
 
-var imagens = [
-"midia/foto1.png",
-"midia/foto2.png",
-"midia/foto3.png",
-"midia/foto4.png"
+var imagens=[
+
+"midia/foto1.jpg",
+"midia/foto2.jpg",
+"midia/foto3.jpg",
+"midia/foto4.jpg",
+"midia/foto5.jpg",
+"midia/foto6.jpg",
+"midia/foto7.jpg",
+"midia/foto8.jpg",
+"midia/foto9.jpg",
+"midia/foto10.jpg",
+"midia/foto11.jpg",
+"midia/foto12.jpg",
+"midia/foto13.jpg",
+"midia/foto14.jpg",
+"midia/foto15.jpg",
+"midia/foto16.jpg",
+"midia/foto17.jpg",
+"midia/foto18.jpg",
+"midia/foto19.jpg",
+"midia/foto20.jpg",
+"midia/foto21.jpg",
+"midia/foto22.jpg",
+"midia/foto23.jpg",
+"midia/foto24.jpg",
+"midia/foto25.jpg",
+"midia/foto26.jpg",
+"midia/foto27.jpg",
+"midia/foto28.jpg",
+"midia/foto29.jpg",
+"midia/foto30.jpg"
+
 ]
 
-var videos = [
-"midia/video1.mp4",
-"midia/video2.mp4"
+var videos=[
+"midia/video1.mp4"
 ]
 
 function criarImagem(){
 
-var img = document.createElement("img")
-img.src = imagens[Math.floor(Math.random()*imagens.length)]
+var img=document.createElement("img")
+
+img.src=imagens[Math.floor(Math.random()*imagens.length)]
+
 img.className="media"
 
-var x = Math.random()*window.innerWidth
-var y = Math.random()*window.innerHeight
+var x=Math.random()*window.innerWidth
+var y=Math.random()*window.innerHeight
 
 img.style.left=x+"px"
 img.style.top=y+"px"
@@ -102,23 +140,24 @@ movimento(img)
 
 function criarVideo(){
 
-var vid = document.createElement("video")
+var v=document.createElement("video")
 
-vid.src = videos[Math.floor(Math.random()*videos.length)]
-vid.autoplay=true
-vid.loop=true
-vid.muted=true
-vid.className="media"
+v.src=videos[0]
+v.autoplay=true
+v.loop=true
+v.muted=true
 
-var x = Math.random()*window.innerWidth
-var y = Math.random()*window.innerHeight
+v.className="media"
 
-vid.style.left=x+"px"
-vid.style.top=y+"px"
+var x=Math.random()*window.innerWidth
+var y=Math.random()*window.innerHeight
 
-document.body.appendChild(vid)
+v.style.left=x+"px"
+v.style.top=y+"px"
 
-movimento(vid)
+document.body.appendChild(v)
+
+movimento(v)
 
 }
 
@@ -127,8 +166,8 @@ function movimento(el){
 var x=parseFloat(el.style.left)
 var y=parseFloat(el.style.top)
 
-var dx=(Math.random()*2)+1
-var dy=(Math.random()*2)+1
+var dx=(Math.random()*3)+1
+var dy=(Math.random()*3)+1
 
 setInterval(function(){
 
@@ -145,24 +184,17 @@ el.style.top=y+"px"
 
 }
 
+for(let i=0;i<35;i++) criarImagem()
 
-// criar várias mídias
+for(let i=0;i<3;i++) criarVideo()
 
-for(let i=0;i<12;i++) criarImagem()
-
-for(let i=0;i<4;i++) criarVideo()
-
-
-
-// countdown
-
-var volta = new Date("2026-06-23T09:00:00")
+var volta=new Date("2026-03-29T09:00:00")
 
 function atualizar(){
 
-var agora = new Date()
+var agora=new Date()
 
-var diff = volta-agora
+var diff=volta-agora
 
 var dias=Math.floor(diff/(1000*60*60*24))
 var horas=Math.floor((diff/(1000*60*60))%24)
@@ -170,33 +202,12 @@ var min=Math.floor((diff/(1000*60))%60)
 var seg=Math.floor((diff/1000)%60)
 
 document.getElementById("countdown").innerHTML=
-"⏳ Voltando ao trabalho em: "+dias+"d "+horas+"h "+min+"m "+seg+"s"
+
+"⏳ VOLTA AO TRABALHO EM: "+dias+"d "+horas+"h "+min+"m "+seg+"s"
 
 }
 
 setInterval(atualizar,1000)
-
-
-
-// música
-
-var musicas = [
-"musica/musica1.mp3",
-"musica/musica2.mp3"
-]
-
-var audio = new Audio(
-musicas[Math.floor(Math.random()*musicas.length)]
-)
-
-audio.loop=true
-audio.volume=0.6
-
-window.addEventListener("click",function(){
-
-audio.play()
-
-},{once:true})
 
 </script>
 
