@@ -2,7 +2,6 @@
 <html>
 
 <head>
-
 <meta charset="UTF-8">
 <title>Minhas Férias</title>
 
@@ -10,76 +9,151 @@
 
 body{
 font-family:"Comic Sans MS",cursive;
-text-align:center;
-overflow:hidden;
+margin:0;
+overflow-x:hidden;
 color:white;
+text-align:center;
+}
 
-background-image:
-url("midia/foto1.jpg"),
-url("midia/foto2.jpg"),
-url("midia/foto3.jpg"),
-url("midia/foto4.jpg");
+/* fundo principal */
 
-background-size:300px;
+#background{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-3;
+background-size:cover;
+background-position:center;
+}
+
+/* padrão repetido */
+
+#bgPattern{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-2;
+opacity:0.35;
+background-size:250px;
 background-repeat:repeat;
 }
 
+/* fotos flutuando */
+
+.fotoFlutuante{
+position:fixed;
+width:120px;
+opacity:0.35;
+z-index:-1;
+pointer-events:none;
+}
+
 h1{
-font-size:80px;
+font-size:70px;
 color:yellow;
 text-shadow:3px 3px red;
 }
 
 #countdown{
-font-size:40px;
+font-size:35px;
 background:black;
-display:inline-block;
 padding:10px;
-margin:20px;
+display:inline-block;
+margin:10px;
 }
 
-.media{
-position:absolute;
-width:180px;
+#videoContainer{
+position:fixed;
+top:20px;
+right:20px;
 }
 
 video{
-width:240px;
+width:260px;
+border:5px solid white;
 }
 
 #diario{
-position:fixed;
-bottom:0;
-width:100%;
-background:rgba(0,0,0,0.8);
-padding:10px;
+margin-top:30px;
+background:rgba(0,0,0,0.7);
+padding:20px;
 }
 
 textarea{
 width:80%;
-height:120px;
+height:100px;
 font-family:"Comic Sans MS";
 font-size:18px;
 }
 
-</style>
+button{
+font-family:"Comic Sans MS";
+font-size:20px;
+padding:8px 20px;
+margin-top:10px;
+cursor:pointer;
+}
 
+#posts{
+max-width:700px;
+margin:auto;
+margin-top:30px;
+}
+
+.post{
+background:rgba(0,0,0,0.8);
+padding:15px;
+margin:10px;
+border:3px dashed yellow;
+text-align:left;
+}
+
+.data{
+font-size:14px;
+color:#ccc;
+}
+
+</style>
 </head>
 
 <body>
+
+<div id="background"></div>
+<div id="bgPattern"></div>
 
 <h1>🌴 MINHAS FÉRIAS 🌴</h1>
 
 <div id="countdown"></div>
 
-<div id="diario">
-<h2>Diário das férias</h2>
-<textarea placeholder="Escreva o que aconteceu hoje..."></textarea>
+<div id="videoContainer">
+<video autoplay muted loop>
+<source src="midia/video1.mp4" type="video/mp4">
+</video>
 </div>
+
+<div id="diario">
+
+<h2>Diário das férias</h2>
+
+<textarea id="textoPost" placeholder="O que aconteceu hoje?"></textarea>
+
+<br>
+
+<button onclick="publicar()">PUBLICAR</button>
+
+</div>
+
+<div id="posts"></div>
 
 <script>
 
-var imagens=[
+/* LISTA DE FOTOS */
+
+var fotos=[
 
 "midia/foto1.jpg",
 "midia/foto2.jpg",
@@ -114,17 +188,31 @@ var imagens=[
 
 ]
 
-var videos=[
-"midia/video1.mp4"
-]
+/* FUNDO QUE MUDA */
 
-function criarImagem(){
+function trocarFundo(){
+
+var img=fotos[Math.floor(Math.random()*fotos.length)]
+
+document.getElementById("background").style.backgroundImage="url("+img+")"
+document.getElementById("bgPattern").style.backgroundImage="url("+img+")"
+
+}
+
+trocarFundo()
+
+setInterval(trocarFundo,5000)
+
+
+/* FOTOS PINGANDO */
+
+function criarFotoFlutuante(){
 
 var img=document.createElement("img")
 
-img.src=imagens[Math.floor(Math.random()*imagens.length)]
+img.src=fotos[Math.floor(Math.random()*fotos.length)]
 
-img.className="media"
+img.className="fotoFlutuante"
 
 var x=Math.random()*window.innerWidth
 var y=Math.random()*window.innerHeight
@@ -134,59 +222,30 @@ img.style.top=y+"px"
 
 document.body.appendChild(img)
 
-movimento(img)
-
-}
-
-function criarVideo(){
-
-var v=document.createElement("video")
-
-v.src=videos[0]
-v.autoplay=true
-v.loop=true
-v.muted=true
-
-v.className="media"
-
-var x=Math.random()*window.innerWidth
-var y=Math.random()*window.innerHeight
-
-v.style.left=x+"px"
-v.style.top=y+"px"
-
-document.body.appendChild(v)
-
-movimento(v)
-
-}
-
-function movimento(el){
-
-var x=parseFloat(el.style.left)
-var y=parseFloat(el.style.top)
-
-var dx=(Math.random()*3)+1
-var dy=(Math.random()*3)+1
+var dx=(Math.random()*2)+1
+var dy=(Math.random()*2)+1
 
 setInterval(function(){
 
 x+=dx
 y+=dy
 
-if(x>window.innerWidth-200||x<0) dx*=-1
-if(y>window.innerHeight-200||y<0) dy*=-1
+if(x>window.innerWidth-120||x<0) dx*=-1
+if(y>window.innerHeight-120||y<0) dy*=-1
 
-el.style.left=x+"px"
-el.style.top=y+"px"
+img.style.left=x+"px"
+img.style.top=y+"px"
 
 },30)
 
 }
 
-for(let i=0;i<35;i++) criarImagem()
+for(let i=0;i<25;i++){
+criarFotoFlutuante()
+}
 
-for(let i=0;i<3;i++) criarVideo()
+
+/* COUNTDOWN */
 
 var volta=new Date("2026-03-29T09:00:00")
 
@@ -202,15 +261,85 @@ var min=Math.floor((diff/(1000*60))%60)
 var seg=Math.floor((diff/1000)%60)
 
 document.getElementById("countdown").innerHTML=
-
 "⏳ VOLTA AO TRABALHO EM: "+dias+"d "+horas+"h "+min+"m "+seg+"s"
 
 }
 
 setInterval(atualizar,1000)
 
+
+/* MUSICA */
+
+var audio=new Audio("musica/musica1.mp3")
+
+audio.loop=true
+audio.volume=0.7
+
+function iniciarMusica(){
+
+audio.play()
+
+document.removeEventListener("mousemove",iniciarMusica)
+document.removeEventListener("click",iniciarMusica)
+
+}
+
+document.addEventListener("mousemove",iniciarMusica)
+document.addEventListener("click",iniciarMusica)
+
+
+/* DIARIO */
+
+function carregarPosts(){
+
+var posts=JSON.parse(localStorage.getItem("postsFerias")||"[]")
+
+var container=document.getElementById("posts")
+
+container.innerHTML=""
+
+posts.reverse().forEach(function(p){
+
+var div=document.createElement("div")
+div.className="post"
+
+div.innerHTML=
+"<div class='data'>"+p.data+"</div>"+p.texto
+
+container.appendChild(div)
+
+})
+
+}
+
+function publicar(){
+
+var texto=document.getElementById("textoPost").value
+
+if(texto=="") return
+
+var posts=JSON.parse(localStorage.getItem("postsFerias")||"[]")
+
+var agora=new Date()
+
+var data=agora.toLocaleDateString()+" "+agora.toLocaleTimeString()
+
+posts.push({
+texto:texto,
+data:data
+})
+
+localStorage.setItem("postsFerias",JSON.stringify(posts))
+
+document.getElementById("textoPost").value=""
+
+carregarPosts()
+
+}
+
+carregarPosts()
+
 </script>
 
 </body>
-
 </html>
